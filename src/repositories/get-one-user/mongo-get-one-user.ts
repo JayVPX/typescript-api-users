@@ -8,8 +8,6 @@ import type { User } from "../../models/user.model.js";
 
 export class MongoGetOneUserRepository implements IGetOneUserRepository {
   async getOneUser(params: GetOneParams): Promise<User> {
-    console.log(params);
-
     const user = await MongoClient.db
       .collection<Omit<User, "id">>("users")
       .findOne({ _id: new ObjectId(params.id) });
