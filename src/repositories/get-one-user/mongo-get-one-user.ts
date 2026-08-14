@@ -11,13 +11,15 @@ export class MongoGetOneUserRepository implements IGetOneUserRepository {
     console.log(params);
 
     const user = await MongoClient.db
-      .collection<User>("users")
+      .collection<Omit<User, "id">>("users")
       .findOne({ _id: new ObjectId(params.id) });
 
     if (!user) {
       throw new Error("User not found!");
     }
 
-    return { ...user, id: user?._id.toHexString() };
+    const { _id, ...rest } = user;
+
+    return { id: _id.toHexString(), ...rest };
   }
 }

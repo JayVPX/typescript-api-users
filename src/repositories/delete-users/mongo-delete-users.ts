@@ -12,13 +12,15 @@ export class MongoDeleteUserRepository implements IDeleteUserRepository {
     const { id } = params;
 
     const user = await MongoClient.db
-      .collection<User>("users")
+      .collection<Omit<User, "id">>("users")
       .findOneAndDelete({ _id: new ObjectId(id) });
 
     if (!user) {
       throw new Error("User were not found.");
     }
 
-    return { ...user, id: user?._id.toHexString() };
+    const { _id, ...rest } = user;
+
+    return { id: _id.toHexString(), ...rest };
   }
 }
