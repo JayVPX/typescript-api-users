@@ -29,7 +29,7 @@ const main = async () => {
 
     const response = await getUsersController.handle();
 
-    res.send(response.body).status(response.statusCode);
+    res.status(response.statusCode).send(response.body);
   });
 
   // GetOneUser
@@ -43,7 +43,7 @@ const main = async () => {
       params: req.params.id,
     });
 
-    res.send(response.body).status(response.statusCode);
+    res.status(response.statusCode).send(response.body);
   });
 
   // PostUsers
@@ -55,7 +55,7 @@ const main = async () => {
 
     const response = await createUserController.handle({ body: req.body });
 
-    res.send(response.body).status(response.statusCode);
+    res.status(response.statusCode).send(response.body);
   });
 
   // UpdateUser
@@ -70,7 +70,7 @@ const main = async () => {
       params: req.params,
     });
 
-    res.send(response.body).status(response.statusCode);
+    res.status(response.statusCode).send(response.body);
   });
 
   // DeleteUsers
@@ -85,7 +85,7 @@ const main = async () => {
       params: req.params.id,
     });
 
-    res.send(response.body).status(response.statusCode);
+    res.status(response.statusCode).send(response.body);
   });
 
   app.listen(port, () => {
