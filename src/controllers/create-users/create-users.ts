@@ -1,5 +1,10 @@
 import type { User } from "../../models/user.model.js";
-import { badRequest, createdRequest, successRequest } from "../helpers.js";
+import {
+  badRequest,
+  createdRequest,
+  serverError,
+  successRequest,
+} from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   CreateUserParams,
@@ -13,7 +18,7 @@ export class CreateUserController implements ICreateUserController {
 
   async handle(
     httpRequest: HttpRequest<CreateUserParams>,
-  ): Promise<HttpResponse<User>> {
+  ): Promise<HttpResponse<User | string>> {
     try {
       const requiredFields = ["firstName", "lastName", "email", "password"];
 
@@ -35,10 +40,7 @@ export class CreateUserController implements ICreateUserController {
 
       return createdRequest<User>(user);
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: "Something went wrong",
-      };
+      return serverError();
     }
   }
 }

@@ -6,7 +6,7 @@ export interface GetOneParams {
 }
 
 export interface IGetOneUserController {
-  handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User>>;
+  handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User | string>>;
 }
 
 export interface IGetOneUserRepository {

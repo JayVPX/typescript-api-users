@@ -1,5 +1,5 @@
 import type { User } from "../../models/user.model.js";
-import { badRequest, successRequest } from "../helpers.js";
+import { badRequest, serverError, successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   DeleteUserParams,
@@ -10,7 +10,9 @@ import type {
 export class DeleteUserController implements IDeleteUserController {
   constructor(private readonly deleteUserRepository: IDeleteUserRepository) {}
 
-  async handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User>> {
+  async handle(
+    httpRequest: HttpRequest<any>,
+  ): Promise<HttpResponse<User | string>> {
     try {
       const paramsId = httpRequest.params;
 
@@ -24,10 +26,7 @@ export class DeleteUserController implements IDeleteUserController {
 
       return successRequest<User>(user);
     } catch (error) {
-      return {
-        body: "Something went wrong",
-        statusCode: 500,
-      };
+      return serverError();
     }
   }
 }

@@ -15,5 +15,5 @@ export interface ICreateUserRepository {
 export interface ICreateUserController {
   handle(
     httpRequest: HttpRequest<CreateUserParams>,
-  ): Promise<HttpResponse<User>>;
+  ): Promise<HttpResponse<User | string>>;
 }

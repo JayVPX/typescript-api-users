@@ -6,7 +6,7 @@ export interface DeleteUserParams {
 }
 
 export interface IDeleteUserController {
-  handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User>>;
+  handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User | string>>;
 }
 
 export interface IDeleteUserRepository {

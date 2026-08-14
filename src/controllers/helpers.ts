@@ -14,3 +14,7 @@ export const successRequest = <T>(body: any): HttpResponse<T> => {
 export const createdRequest = <T>(body: any): HttpResponse<T> => {
   return { statusCode: 201, body };
 };
+
+export const serverError = (): HttpResponse<string> => {
+  return { statusCode: 500, body: "Something went wrong" };
+};

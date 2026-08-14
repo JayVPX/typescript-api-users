@@ -1,5 +1,5 @@
 import type { User } from "../../models/user.model.js";
-import { badRequest, successRequest } from "../helpers.js";
+import { badRequest, serverError, successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   IGetOneUserController,
@@ -9,7 +9,9 @@ import type {
 export class GetOneUserController implements IGetOneUserController {
   constructor(private readonly getOneUserRepository: IGetOneUserRepository) {}
 
-  async handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User>> {
+  async handle(
+    httpRequest: HttpRequest<any>,
+  ): Promise<HttpResponse<User | string>> {
     try {
       if (!httpRequest.params) {
         badRequest("Missing user id.");
@@ -21,10 +23,7 @@ export class GetOneUserController implements IGetOneUserController {
 
       return successRequest<User>(user);
     } catch (error) {
-      return {
-        body: "Something went wrong",
-        statusCode: 500,
-      };
+      return serverError();
     }
   }
 }

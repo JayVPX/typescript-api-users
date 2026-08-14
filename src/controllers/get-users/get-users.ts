@@ -1,5 +1,5 @@
 import type { User } from "../../models/user.model.js";
-import { successRequest } from "../helpers.js";
+import { serverError, successRequest } from "../helpers.js";
 import type { IGetUserRepository, IGetUsersController } from "./protocols.js";
 
 export class GetUsersController implements IGetUsersController {
@@ -11,10 +11,7 @@ export class GetUsersController implements IGetUsersController {
 
       return successRequest<User[]>(users);
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: "Something went wrong",
-      };
+      return serverError();
     }
   }
 }

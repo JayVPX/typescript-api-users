@@ -1,5 +1,5 @@
 import type { User } from "../../models/user.model.js";
-import { badRequest, successRequest } from "../helpers.js";
+import { badRequest, serverError, successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   IUpdateUserController,
@@ -11,7 +11,7 @@ export class UpdateUserController implements IUpdateUserController {
   constructor(private readonly updateUserRepository: IUpdateUserRepository) {}
   async handle(
     httpRequest: HttpRequest<UpdateUserParams>,
-  ): Promise<HttpResponse<User>> {
+  ): Promise<HttpResponse<User | string>> {
     try {
       const { body, params } = httpRequest;
 
@@ -26,10 +26,7 @@ export class UpdateUserController implements IUpdateUserController {
 
       return successRequest<User>(user);
     } catch (error) {
-      return {
-        body: "Something went wrong.",
-        statusCode: 500,
-      };
+      return serverError();
     }
   }
 }
