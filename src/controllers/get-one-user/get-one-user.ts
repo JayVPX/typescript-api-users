@@ -1,5 +1,5 @@
 import type { User } from "../../models/user.model.js";
-import { successRequest } from "../helpers.js";
+import { badRequest, successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   IGetOneUserController,
@@ -11,11 +11,15 @@ export class GetOneUserController implements IGetOneUserController {
 
   async handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User>> {
     try {
+      if (!httpRequest.params) {
+        badRequest("Missing user id.");
+      }
+
       const user = await this.getOneUserRepository.getOneUser({
         id: httpRequest.params,
       });
 
-      return successRequest(user);
+      return successRequest<User>(user);
     } catch (error) {
       return {
         body: "Something went wrong",

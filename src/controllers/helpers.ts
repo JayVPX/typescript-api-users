@@ -1,3 +1,5 @@
+import type { HttpResponse } from "./protocols.js";
+
 export const badRequest = (message: string) => {
   return {
     statusCode: 400,
@@ -5,10 +7,10 @@ export const badRequest = (message: string) => {
   };
 };
 
-export const successRequest = (body: any) => {
+export const successRequest = <T>(body: any): HttpResponse<T> => {
   return { statusCode: 200, body };
 };
 
-export const createdRequest = (body: any) => {
+export const createdRequest = <T>(body: any): HttpResponse<T> => {
   return { statusCode: 201, body };
 };

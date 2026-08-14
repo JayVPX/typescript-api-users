@@ -1,5 +1,5 @@
 import type { User } from "../../models/user.model.js";
-import { successRequest } from "../helpers.js";
+import { badRequest, successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   DeleteUserParams,
@@ -14,11 +14,15 @@ export class DeleteUserController implements IDeleteUserController {
     try {
       const paramsId = httpRequest.params;
 
+      if (!paramsId) {
+        badRequest("Missing user id.");
+      }
+
       const user = await this.deleteUserRepository.deleteUser({
         id: paramsId,
       });
 
-      return successRequest(user);
+      return successRequest<User>(user);
     } catch (error) {
       return {
         body: "Something went wrong",

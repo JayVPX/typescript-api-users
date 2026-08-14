@@ -33,7 +33,7 @@ export class CreateUserController implements ICreateUserController {
         httpRequest.body!,
       );
 
-      return createdRequest(user);
+      return createdRequest<User>(user);
     } catch (error) {
       return {
         statusCode: 500,

@@ -15,12 +15,16 @@ export class UpdateUserController implements IUpdateUserController {
     try {
       const { body, params } = httpRequest;
 
+      if (!params.id) {
+        return badRequest("Missing user id.");
+      }
+
       if (!body) {
-        return badRequest("Fill the fields");
+        return badRequest("Fill the fields.");
       }
       const user = await this.updateUserRepository.updateUser(params.id, body);
 
-      return successRequest(user);
+      return successRequest<User>(user);
     } catch (error) {
       return {
         body: "Something went wrong.",
