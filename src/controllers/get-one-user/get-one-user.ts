@@ -1,4 +1,5 @@
 import type { User } from "../../models/user.model.js";
+import { successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   IGetOneUserController,
@@ -14,10 +15,7 @@ export class GetOneUserController implements IGetOneUserController {
         id: httpRequest.params,
       });
 
-      return {
-        body: user,
-        statusCode: 200,
-      };
+      return successRequest(user);
     } catch (error) {
       return {
         body: "Something went wrong",

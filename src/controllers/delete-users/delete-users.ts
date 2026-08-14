@@ -1,4 +1,5 @@
 import type { User } from "../../models/user.model.js";
+import { successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   DeleteUserParams,
@@ -17,10 +18,7 @@ export class DeleteUserController implements IDeleteUserController {
         id: paramsId,
       });
 
-      return {
-        body: user,
-        statusCode: 200,
-      };
+      return successRequest(user);
     } catch (error) {
       return {
         body: "Something went wrong",

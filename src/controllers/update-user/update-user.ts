@@ -1,4 +1,5 @@
 import type { User } from "../../models/user.model.js";
+import { badRequest, successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   IUpdateUserController,
@@ -15,11 +16,11 @@ export class UpdateUserController implements IUpdateUserController {
       const { body, params } = httpRequest;
 
       if (!body) {
-        throw new Error("Please insert a field to update.");
+        return badRequest("Fill the fields");
       }
       const user = await this.updateUserRepository.updateUser(params.id, body);
 
-      return { body: user, statusCode: 200 };
+      return successRequest(user);
     } catch (error) {
       return {
         body: "Something went wrong.",

@@ -1,3 +1,4 @@
+import { successRequest } from "../helpers.js";
 import type { IGetUserRepository, IGetUsersController } from "./protocols.js";
 
 export class GetUsersController implements IGetUsersController {
@@ -7,10 +8,7 @@ export class GetUsersController implements IGetUsersController {
     try {
       const users = await this.getUsersRepository.getUsers();
 
-      return {
-        statusCode: 200,
-        body: users,
-      };
+      return successRequest(users);
     } catch (error) {
       return {
         statusCode: 500,

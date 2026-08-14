@@ -1,4 +1,5 @@
 import type { User } from "../../models/user.model.js";
+import { badRequest, createdRequest, successRequest } from "../helpers.js";
 import type { HttpRequest, HttpResponse } from "../protocols.js";
 import type {
   CreateUserParams,
@@ -18,24 +19,21 @@ export class CreateUserController implements ICreateUserController {
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof CreateUserParams]?.length) {
-          return { statusCode: 400, body: `Field ${field} is required` };
+          return badRequest(`Field ${field} is required`);
         }
       }
 
       const emailIsValid = validator.isEmail(httpRequest.body!.email);
 
       if (!emailIsValid) {
-        return {
-          statusCode: 400,
-          body: "E-mail is invalid",
-        };
+        return badRequest("E-mail inválido");
       }
 
       const user = await this.createUserRepository.createUser(
         httpRequest.body!,
       );
 
-      return { body: user, statusCode: 201 };
+      return createdRequest(user);
     } catch (error) {
       return {
         statusCode: 500,
