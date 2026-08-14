@@ -7,6 +7,8 @@ import { MongoCreateUserRepository } from "./repositories/create-users/mongo-cre
 import { CreateUserController } from "./controllers/create-users/create-users.js";
 import { MongoDeleteUserRepository } from "./repositories/delete-users/mongo-delete-users.js";
 import { DeleteUserController } from "./controllers/delete-users/delete-users.js";
+import { MongoGetOneUserRepository } from "./repositories/get-one-user/mongo-get-one-user.js";
+import { GetOneUserController } from "./controllers/get-one-user/get-one-user.js";
 
 const main = async () => {
   config();
@@ -24,6 +26,20 @@ const main = async () => {
     const getUsersController = new GetUsersController(mongoGetUsersRepository);
 
     const response = await getUsersController.handle();
+
+    res.send(response.body).status(response.statusCode);
+  });
+
+  // GetOneUser
+  app.get("/users/:id", async (req, res) => {
+    const mongoGetOneUserRepository = new MongoGetOneUserRepository();
+    const getOneUserController = new GetOneUserController(
+      mongoGetOneUserRepository,
+    );
+
+    const response = await getOneUserController.handle({
+      params: req.params.id,
+    });
 
     res.send(response.body).status(response.statusCode);
   });
